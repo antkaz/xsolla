@@ -6,10 +6,12 @@ use Yii;
 use yii\rest\ActiveController;
 use yii\filters\auth\HttpBearerAuth;
 use yii\data\ActiveDataProvider;
+use app\models\File;
 
 class FileController extends ActiveController
 {
     public $modelClass = 'app\models\File';
+    public $updateScenario = File::SCENARIO_UPDATE;
 
     public function behaviors()
     {
@@ -27,10 +29,24 @@ class FileController extends ActiveController
 
     public function prepareDataProvider()
     {
-        return Yii::createObject([
-                    'class' => ActiveDataProvider::className(),
-                    'query' => $this->modelClass::find()->where(['user_id' => Yii::$app->user->id]),
+        $dataProvider = new ActiveDataProvider([
+            'query' => $this->modelClass::find()
+                    ->where(['user_id' => Yii::$app->user->id]),
         ]);
+        return $dataProvider;
+    }
+
+    public function checkAccess($action, $model = null, $params = array())
+    {
+        if ($action == 'update' || $action == 'delete' || $action == 'view') {
+            if ($model->user_id !== Yii::$app->user->id) {
+                throw new \yii\web\NotFoundHttpException('The file does not exist');
+            }
+        }
+    }
+    
+    public function actionMeta($id) {
+        $model = $this->findM
     }
 
 }
