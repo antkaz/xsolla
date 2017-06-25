@@ -12,12 +12,11 @@ use yii\helpers\FileHelper;
  * @property int $user_id
  * @property string $filename
  */
-class File extends ActiveRecord
-{
+class File extends ActiveRecord {
+
     CONST SCENARIO_UPDATE = 'update';
 
     public $text;
-    public $meta;
     private $path;
 
     public function init()
@@ -57,7 +56,7 @@ class File extends ActiveRecord
     public function fields()
     {
         if (Yii::$app->controller->action->id == 'view') {
-            return ['file_id', 'filename', 'text', 'meta'];
+            return ['file_id', 'filename', 'text'];
         } else {
             return ['file_id', 'filename'];
         }
@@ -97,8 +96,25 @@ class File extends ActiveRecord
             }
 
             $this->text = file_get_contents($this->path . $this->filename);
-            $this->meta = exif_read_data($this->path . $this->filename);
         }
+    }
+
+    public function getMeta()
+    {
+        $path = $this->path . $this->filename;
+        if (!file_exists($path)) {
+            throw new \yii\web\NotFoundHttpException('The file does not exist');
+        }
+
+        $meta = [];
+        $meta['size'] = filesize($path);
+        $meta['updated'] = date("d.m.Y H:i:s", filemtime($path));
+
+        $finfo = finfo_open(FILEINFO_MIME);
+        $meta['myme_type'] = finfo_file($finfo, $path);
+        $meta['md5'] = md5_file($path);
+
+        return $meta;
     }
 
     private function createFile()

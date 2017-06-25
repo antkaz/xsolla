@@ -39,7 +39,6 @@ class m170621_165536_init extends Migration
             'username' => 'xsolla',
             'password_hash' => '$2y$13$.sF4F.GNYZKYokAJ0HUrou2rxYKvUeWSlbvf2zytrKr4P8DRN423q', // 123456789
             'access_token' => 'HyUx5Fdmbj4JTdwReKun_Ly1lD8KZ92S',
-            'auth_key' => 'HyUx5Fdmbj4JTdwReKun_Ly1lD8KZ92S',
         ]);
     }
 

@@ -46,7 +46,26 @@ class FileController extends ActiveController
     }
     
     public function actionMeta($id) {
-        $model = $this->findM
+        /* @var File $model */
+        $model = $this->findModel($id);
+        return $model->getMeta();
+    }
+    
+    /**
+     * 
+     * @param integer $id
+     * @return File
+     * @throws \yii\web\NotFoundHttpException
+     */
+    private function findModel($id) {
+        $modelClass = $this->modelClass;
+        $model = $modelClass::findOne($id);
+        
+        if ($model === null) {
+            throw new \yii\web\NotFoundHttpException('The file does not exist');
+        }
+        
+        return $model;
     }
 
 }

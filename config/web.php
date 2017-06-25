@@ -39,10 +39,15 @@ $config = [
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
-            //'enableStrictParsing' => true,
-            //'showScriptName' => false,
+            'enableStrictParsing' => true,
+            'showScriptName' => false,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'file']
+                'PUT,PATCH files/<id>' => 'file/update',
+                'DELETE files/<id>' => 'file/delete',
+                'GET files/<id>' => 'file/view',
+                'POST files' => 'file/create',
+                'GET files' => 'file/index',
+                'GET files/<id>/meta' => 'file/meta',
             ],
         ],
         'db' => $db,
