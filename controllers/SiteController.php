@@ -2,55 +2,46 @@
 
 namespace app\controllers;
 
-use yii\web\Controller;
-use yii\filters\VerbFilter;
+use Yii;
+use yii\rest\Controller;
+use app\models\Login;
 
 class SiteController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
+
     public function behaviors()
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
+        $behaviors = parent::behaviors();
+        
+        if ($this->action->id == 'index') {
+            unset($behaviors['contentNegotiator']);
+        }
+
+        return $behaviors;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function actions()
+    protected function verbs()
     {
         return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
+            'login' => ['post'],
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
     public function actionIndex()
     {
         return $this->render('index');
     }
 
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
+    public function actionLogin()
     {
-        return $this->render('about');
+        $model = new Login();
+        $model->load(Yii::$app->request->bodyParams, '');
+        $token = $model->auth();
+        if ($token !== null) {
+            return $token;
+        } else {
+            return $model;
+        }
     }
+
 }
