@@ -10,6 +10,7 @@ use app\models\File;
 
 class FileController extends ActiveController
 {
+
     public $modelClass = 'app\models\File';
     public $updateScenario = File::SCENARIO_UPDATE;
 
@@ -44,27 +45,34 @@ class FileController extends ActiveController
             }
         }
     }
-    
-    public function actionMeta($id) {
-        /* @var File $model */
+
+    /**
+     * Returns file metadata
+     * 
+     * @param int $id File id
+     * @return array
+     */
+    public function actionMeta($id)
+    {
         $model = $this->findModel($id);
         return $model->getMeta();
     }
-    
+
     /**
      * 
      * @param integer $id
      * @return File
      * @throws \yii\web\NotFoundHttpException
      */
-    private function findModel($id) {
+    private function findModel($id)
+    {
         $modelClass = $this->modelClass;
         $model = $modelClass::findOne($id);
-        
+
         if ($model === null) {
             throw new \yii\web\NotFoundHttpException('The file does not exist');
         }
-        
+
         return $model;
     }
 

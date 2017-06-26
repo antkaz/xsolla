@@ -12,16 +12,23 @@ use yii\helpers\FileHelper;
  * @property int $user_id
  * @property string $filename
  */
-class File extends ActiveRecord {
+class File extends ActiveRecord
+{
 
     CONST SCENARIO_UPDATE = 'update';
 
     public $text;
+    /**
+     * User directory for files
+     * 
+     * @var strind
+     */
     private $path;
 
     public function init()
     {
         parent::init();
+        
         $this->path = Yii::getAlias('@app/' . Yii::$app->params['uploadDir']) . Yii::$app->user->identity->username . '/';
         $this->user_id = Yii::$app->user->id;
         $filename = (explode('/', $this->filename));
@@ -99,6 +106,12 @@ class File extends ActiveRecord {
         }
     }
 
+    /**
+     * Returns file metadata (filename, size, updated, myme_type, md5_hash)
+     * 
+     * @return array File metadata
+     * @throws \yii\web\NotFoundHttpException
+     */
     public function getMeta()
     {
         $path = $this->path . $this->filename;
@@ -107,17 +120,23 @@ class File extends ActiveRecord {
         }
 
         $meta = [];
+        $meta['name'] = $this->filename;
         $meta['size'] = filesize($path);
         $meta['updated'] = date("d.m.Y H:i:s", filemtime($path));
 
         $finfo = finfo_open(FILEINFO_MIME);
         $meta['myme_type'] = finfo_file($finfo, $path);
-        $meta['md5'] = md5_file($path);
+        $meta['md5_hash'] = md5_file($path);
 
         return $meta;
     }
 
-    private function createFile()
+    /**
+     * Creates a file and writes data to it
+     * 
+     * @return boolean TRUE if created file, or FALSE if file is not created
+     */
+    private function createFile() : bool
     {
 
         if (!FileHelper::createDirectory($this->path)) {
@@ -135,6 +154,11 @@ class File extends ActiveRecord {
         return true;
     }
 
+    /**
+     * Updated data in a file
+     * 
+     * @return boolean TRUE if data updated, or FALSE
+     */
     private function updateFile()
     {
         if (!file_exists($this->path . $this->filename)) {
