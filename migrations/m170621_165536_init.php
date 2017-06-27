@@ -39,10 +39,15 @@ class m170621_165536_init extends Migration
             'username' => 'xsolla',
             'password_hash' => '$2y$13$.sF4F.GNYZKYokAJ0HUrou2rxYKvUeWSlbvf2zytrKr4P8DRN423q', // 123456789
         ]);
+        $this->insert($this->userTable, [
+            'username' => 'test',
+            'password_hash' => '$2y$13$.sF4F.GNYZKYokAJ0HUrou2rxYKvUeWSlbvf2zytrKr4P8DRN423q', // 123456789
+        ]);
     }
 
     public function down()
     {
+        $this->delete($this->userTable, ['user_id' => 2]);
         $this->delete($this->userTable, ['user_id' => 1]);
         
         $this->dropForeignKey('fk_user_file', $this->fileTable);
