@@ -125,7 +125,7 @@ class File extends ActiveRecord
         $meta['updated'] = date("d.m.Y H:i:s", filemtime($path));
 
         $finfo = finfo_open(FILEINFO_MIME);
-        $meta['myme_type'] = finfo_file($finfo, $path);
+        $meta['mime_type'] = finfo_file($finfo, $path);
         $meta['md5_hash'] = md5_file($path);
 
         return $meta;
