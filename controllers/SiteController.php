@@ -13,7 +13,7 @@ class SiteController extends Controller
     {
         $behaviors = parent::behaviors();
         
-        if ($this->action->id == 'index') {
+        if ($this->action->id == 'index' || $this->action->id == 'doc') {
             unset($behaviors['contentNegotiator']);
         }
 
@@ -30,6 +30,11 @@ class SiteController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+    
+    public function actionDoc()
+    {
+        return $this->render('doc');
     }
 
     public function actionLogin()

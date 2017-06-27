@@ -43,6 +43,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 '' => 'site/index',
+                'doc' => 'site/doc',
                 'auth' => 'site/login',
                 'PUT,PATCH files/<id>' => 'file/update',
                 'DELETE files/<id>' => 'file/delete',
