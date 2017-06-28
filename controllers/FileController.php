@@ -67,7 +67,7 @@ class FileController extends ActiveController
     private function findModel($id)
     {
         $modelClass = $this->modelClass;
-        $model = $modelClass::findOne($id);
+        $model = $modelClass::findOne(['file_id' => $id, 'user_id' => Yii::$app->user->id]);
 
         if ($model === null) {
             throw new \yii\web\NotFoundHttpException('The file does not exist');
