@@ -7,11 +7,6 @@ HTTP API для работы пользователей с файловой си
  - [Установка](#Установка)
  - [Docker](#docker)
  - [API Документация](#http-api)
- - [Демо](https://xsolla.antkaz.ru/) Параметры учетных записей для авторизации:
-	 - Пользователь 1 **xsolla**
-	 - Пароль: **123456789**
-	 - Пользователь 2 **test**
-	 - Пароль: **123456789**
 
 Требования
 ----------
@@ -60,31 +55,6 @@ HTTP API для работы пользователей с файловой си
     ```
 
 6. Настроить Web сервер для запуска приложения. Рекомендуемые параметры Web сервера см на [Install Yii2](http://www.yiiframework.com/doc-2.0/guide-start-installation.html)
-
-Docker
-----------
-1. Скачайте образ [Docker](http://xsolla.antkaz.ru/xsolla.tar.gz)
-2. Загрузите образ из архива:
-
-	```sh
-	$ docker load < xsolla.tar.gz
-	```
-3. Запустите образ:
-
-	```sh
-	$ docker run -itd -h $name --name $name -p 80:80 -p 443:443 xsolla:test
-	```
-	- $name -- имя хоста
-	- -h $name -- назначаемый хост в контейнере
-	- --name $name -- имя контейнера (docker ps --all, столбец NAMES)
-	- -p 22:22 [-p NN:NN, ...] -- проброс портов с хоста(22) в контейнер(22)
-	- xsolla:test -- имя образа 
-4. Выполните команды для запуска Web-сервера и сервера базы данных
-
-	```sh
-	$ docker exec -it $name /etc/init.d/apache2 start
-	$ docker exec -it $name /etc/init.d/mysql start
-	```
 
 HTTP API
 --------
